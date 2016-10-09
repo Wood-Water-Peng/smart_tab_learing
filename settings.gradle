@@ -1,0 +1,1 @@
+include ':smart_tab_library', ':smart_tab_utils-v4', ':test_app'
