@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">My Application</string>
-    <string name="title_01">title_01</string>
-    <string name="title_02">title_02</string>
-    <string name="title_03">title_02</string>
+    <string name="title_01">Hello World</string>
+    <string name="title_02">I am JackyPeng</string>
+    <string name="title_03">Mac Book</string>
+    <string name="title_04">Google</string>
+    <string name="title_05">Apple</string>
+    <string name="title_06">End</string>
 </resources>

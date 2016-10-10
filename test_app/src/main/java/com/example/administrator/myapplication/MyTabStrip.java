@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -20,6 +21,8 @@ public class MyTabStrip extends LinearLayout {
     private static final int AUTO_WIDTH = -1;
     private static final int DEFAULT_SELECTED_INDICATOR_COLOR = 0xFF33B5E5;
     private static final int DEFAULT_INDICATOR_GRAVITY = GRAVITY_BOTTOM;
+    private static final boolean DEFAULT_INDICATOR_IN_CENTER = true;
+    private static final String TAG = "MyTabStrip";
 
     private float selectionOffset;
     private final Paint indicatorPaint;
@@ -31,6 +34,7 @@ public class MyTabStrip extends LinearLayout {
     private int indicatorWidth;
     private int indicatorGravity;
     private final RectF indicatorRectF = new RectF();
+    private boolean indicatorAlwaysInCenter;
 
     public MyTabStrip(Context context) {
         this(context, null);
@@ -49,6 +53,7 @@ public class MyTabStrip extends LinearLayout {
         this.indicatorThickness = (int) (SELECTED_INDICATOR_THICKNESS_DIPS * density);
         this.indicatorWidth = AUTO_WIDTH;
         this.indicatorGravity = GRAVITY_BOTTOM;
+        this.indicatorAlwaysInCenter = DEFAULT_INDICATOR_IN_CENTER;
     }
     /**
      * 如果我需要画一个tab，那么我肯定需要给他定义颜色，所以，我需要一个TabColorizer
@@ -118,7 +123,7 @@ public class MyTabStrip extends LinearLayout {
                 if (color != nextColor) {
                     color = blendColors(nextColor, color, selectionOffset);
                 }
-
+                Log.i(TAG, "color:" + color);
                 /**
                  * 根据滑动的距离，动态的确定出要画的indicator的首尾
                  * 左右的offSet由不同的interpolator根据selectionOff计算出
@@ -131,9 +136,10 @@ public class MyTabStrip extends LinearLayout {
                  * 计算出要滑动到的tab的起始坐标
                  */
                 View nextTab = getChildAt(selectedPosition + 1);
-
-                int nextStart = Utils.getStart(selectedTab);
-                int nextEnd = Utils.getEnd(selectedTab);
+//                Log.i(TAG, "selectedPosition + 1:" + (selectedPosition + 1));
+                Log.i(TAG, "startOffset:" + startOffset);
+                int nextStart = Utils.getStart(nextTab);
+                int nextEnd = Utils.getEnd(nextTab);
 
                 /**
                  * 当pager滑动时，selectionPosition改变，此时的left，right是会动态改变的
@@ -172,7 +178,8 @@ public class MyTabStrip extends LinearLayout {
                 top = center - (thickness / 2f);
                 bottom = center + (thickness / 2f);
         }
-        indicatorPaint.setColor(color);
+        indicatorPaint.setColor(Color.RED);
+//        Log.i(TAG, "left:" + left + "---top:" + top + "---right:" + right + "---bottom:" + bottom);
         indicatorRectF.set(left, top, right, bottom);
 
         canvas.drawRect(indicatorRectF, indicatorPaint);
@@ -189,6 +196,11 @@ public class MyTabStrip extends LinearLayout {
     private TabColorizer getTabColorizer() {
         return (customTabColorizer != null) ? customTabColorizer : defaultTabColorizer;
     }
+
+    boolean isIndicatorAlwaysInCenter() {
+        return indicatorAlwaysInCenter;
+    }
+
 
     public interface TabColorizer {
         int getIndicatorColor(int position);

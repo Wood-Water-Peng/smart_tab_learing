@@ -447,6 +447,7 @@ public class SmartTabLayout extends HorizontalScrollView {
       }
 
       scrollTo(x, 0);
+
       return;
 
     }
